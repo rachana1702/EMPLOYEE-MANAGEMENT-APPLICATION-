@@ -1,0 +1,10 @@
+Employee Management Application :
+
+ng new employee-app --routing --style=scss
+ng add @angular/material
+npm install rxjs
+ng g module employee --routing
+ng g component employee/employee-search
+ng g component employee/employee-edit-popup
+ng g service services/employee
+ng serve -o

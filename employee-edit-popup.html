@@ -1,0 +1,76 @@
+<h2 mat-dialog-title>Edit Employee</h2>
+<form [formGroup]="empForm" (ngSubmit)="save()">
+
+    <mat-form-field class="full-width" >
+        <mat-label>First Name</mat-label>
+        <input matInput formControlName="firstName">
+    </mat-form-field>
+
+    <mat-form-field class="full-width" >
+        <mat-label>Last Name</mat-label>
+        <input matInput formControlName="lastName">
+    </mat-form-field>
+
+    <mat-form-field class="full-width" >
+        <mat-label>Email</mat-label>
+        <input matInput formControlName="email">
+    </mat-form-field>
+
+    <mat-form-field class="full-width" >
+        <mat-label>Location</mat-label>
+        <mat-select formControlName="location">
+            <mat-option *ngFor="let loc of locations" [value]="loc">{{loc}}></mat-option>
+        </mat-select>
+    </mat-form-field>
+
+<!--Skills-->
+
+<h3>Skills</h3>
+<div formArrayName="skills">
+    <div *ngFor="let skill of skills.controls; let i=index" [formGroupName]="i" class="skill-row">
+        <mat-form-field>
+            <mat-label>Skill</mat-label>
+            <input matInput formControlName="skillName">
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-label>Level</mat-label>
+            <input type="number" matInput formControlName="level">
+        </mat-form-field>
+        <button mat-icon-button color="warn" (click)="removeSkill(i)">
+            <mat-icon>delete</mat-icon>
+        </button>
+    </div>
+</div>
+
+
+<!--Experiences-->
+<h3>Work History</h3>
+<div formArrayName="experiences">
+    <div *ngFor ="let exp of experiences.controls; let i=index" [formGroupName]="i" class="exp-row">
+        <mat-form-field>
+            <mat-label>Company</mat-label>
+            <input matInput formControlName="companyName">
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-label>Start Date</mat-label>
+            <input type="date" matInput formControlName="startDate">
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-label>Last Date</mat-label>
+            <input type="date" matInput formControlName="lastDate">
+        </mat-form-field>
+
+        <button mat-icon-button color="warn" (click)="removeExperience(i)">
+            <mat-icon>delete</mat-icon>
+        </button>
+    </div>
+</div>
+
+    <div class="actions">
+        <button mat-raised-button color="primary" type="submit" [disabled]="empForm.invalid">Save</button>
+        <button mat-button type="button" (click)="closeDialog()">Cancel</button>
+    </div>
+</form>

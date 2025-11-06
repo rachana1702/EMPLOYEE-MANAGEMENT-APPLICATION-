@@ -1,0 +1,84 @@
+<p>employee-search works!</p>
+<div class="search-container">
+    <form [formGroup]="searchForm" (ngSubmit)="search()" class="search-form">
+        <mat-form-field appearance="fill">
+            <mat-label>First Name</mat-label>
+            <input matInput formControlName="firstName" placeholder="Enter FirstName">
+            <mat-error *ngIf="searchForm.get('FirstName')?.invalid">
+                Only letters allowed,max 15 characters
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+            <mat-label>Last Name</mat-label>
+            <input matInput formControlName="lastName" placeholder="Enter LastName">
+            <mat-error *ngIf="searchForm.get('lastName')?.invalid">
+                Only letters allowed,max 15 characters
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+            <mat-label>Email Name</mat-label>
+            <input matInput formControlName="email" placeholder="Enter email">
+            <mat-error *ngIf="searchForm.get('email')?.invalid">
+                Enter a valid email
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="full-width">
+            <mat-label>Location</mat-label>
+            <mat-select formControlName="location">
+                <mat-option *ngFor="let loc of locations" [value]="loc">{{loc}}</mat-option>
+            </mat-select>
+        </mat-form-field>
+        <button mat-raised-button color="primary" type="submit" [disabled]="searchForm.invalid">Search</button>
+    </form>
+</div>
+
+<div class="employee-table-container" *ngIf="employees.length > 0">
+    <table mat-table [dataSource]="employees" class="mat-elevation-z8" matSort>
+        <!--Firstname column-->
+        <ng-container matColumnDef="firstName">
+            <th mat-header-cell *matHeaderCellDef>First Name</th>
+            <td mat-cell *matCellDef="let element">{{element.firstName}}</td>
+        </ng-container>
+
+        <!--Lastname column-->
+        <ng-container matColumnDef="lastName">
+            <th mat-header-cell *matHeaderCellDef>Last Name</th>
+            <td mat-cell *matCellDef="let element">{{element.lastName}}</td>
+        </ng-container>
+
+        <!--Location column-->
+        <ng-container matColumnDef="location">
+            <th mat-header-cell *matHeaderCellDef>Location</th>
+            <td mat-cell *matCellDef="let element">{{element.location}}</td>
+        </ng-container>
+
+        <!--Email column-->
+        <ng-container matColumnDef="email">
+            <th mat-header-cell *matHeaderCellDef>Email</th>
+            <td mat-cell *matCellDef="let element">{{element.email}}</td>
+        </ng-container>
+
+        <!--Action column-->
+        <ng-container matColumnDef="action">
+            <th mat-header-cell *matHeaderCellDef>Actions</th>
+            <td mat-cell *matCellDef="let element">
+                <button mat-button color="accent" (click)="edit(element)">Edit</button>
+                <button mat-button color="warn" (click)="delete(element.id)">Delete</button>
+            </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="['firstName','lastName','location','email','action']"></tr>
+        <tr mat-row *matRowDef="let row; columns:['firstName','lastName','location','email','action'];"></tr>
+    </table>
+
+    <!--Pagination column-->
+    <mat-paginator [length]="totalRecords" [pageSize]="pageSize" (page)="page = $event.pageIndex + 1;
+    search()" [pageSizeOptions]="[5,10,20]"></mat-paginator>
+</div>
+
+<div *ngIf="searchAttempted && employees.length === 0" class="no-employee-message">
+    <p>No employees found.</p>
+</div>
